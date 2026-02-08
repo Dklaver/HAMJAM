@@ -49,7 +49,6 @@ public class BulletControl : MonoBehaviour
         RotateObjects();
     }
 
-    // ✅ Call this method to move the bullet forward
     public void MoveForward(float speed)
     {
         transform.position += transform.forward * speed * Time.deltaTime;
