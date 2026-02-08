@@ -1612,6 +1612,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   moveSpeed: 10
+  forwardSpeed: 284.81
+  rotationSpeed: 40
+  listOfObjectsToRotate:
+  - {fileID: 7644869771152921237}
+  - {fileID: 7644869771152921236}
+  - {fileID: 7644869771152921235}
 --- !u!4 &370597359 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1243494425340637871, guid: 7016286c44469904f9fbb2c0df8840f1, type: 3}
@@ -7530,6 +7536,21 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 370597358}
   m_SourcePrefab: {fileID: 100100000, guid: 7016286c44469904f9fbb2c0df8840f1, type: 3}
+--- !u!1 &7644869771152921235 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7362178379831122165, guid: 7016286c44469904f9fbb2c0df8840f1, type: 3}
+  m_PrefabInstance: {fileID: 7644869771152921234}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7644869771152921236 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1791072629989538816, guid: 7016286c44469904f9fbb2c0df8840f1, type: 3}
+  m_PrefabInstance: {fileID: 7644869771152921234}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7644869771152921237 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1057723004911227709, guid: 7016286c44469904f9fbb2c0df8840f1, type: 3}
+  m_PrefabInstance: {fileID: 7644869771152921234}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
