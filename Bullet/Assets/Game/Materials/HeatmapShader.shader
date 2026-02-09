@@ -39,14 +39,12 @@ Shader "Custom/HeatmapShader"
             CBUFFER_START(UnityPerMaterial)
                 half4 _BaseColor;
                 float4 _BaseMap_ST;
-                half _HeatRadius; // New radius property
+                half _HeatRadius;
             CBUFFER_END
 
-            // Data from C#
             float _Hits[MAX_HITS * 3];
             int _HitCount;
 
-            // Compile-time constants (WebGL safe)
             static const half4 colors[5] =
             {
                 half4(0,0,0,0),
@@ -69,12 +67,12 @@ Shader "Custom/HeatmapShader"
                 return OUT;
             }
 
-            // Distance-based falloff using radius
+
             half distsq(float2 a, float2 b)
             {
-                half d = distance(a, b) / _HeatRadius; // Normalize distance by radius
-                d = saturate(1.0h - d);                // Clamp to 0–1
-                return d * d;                          // Smooth falloff
+                half d = distance(a, b) / _HeatRadius;
+                d = saturate(1.0h - d);
+                return d * d;
             }
 
             half3 getHeatForPixel(half weight)
