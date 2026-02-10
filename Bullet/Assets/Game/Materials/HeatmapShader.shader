@@ -4,7 +4,7 @@ Shader "Custom/HeatmapShader"
     {
         [MainColor] _BaseColor("Base Color", Color) = (1,1,1,1)
         [MainTexture] _BaseMap("Base Map", 2D) = "white" {}
-        [Range(0.01,0.5)] _HeatRadius("Heat Radius", Float) = 0.1
+        [Range(0.01,2.0)] _HeatRadius("Heat Radius", Float) = 0.5
     }
 
     SubShader
@@ -31,6 +31,7 @@ Shader "Custom/HeatmapShader"
             {
                 float4 positionHCS : SV_POSITION;
                 float2 uv : TEXCOORD0;
+                float3 positionWS : TEXCOORD1;
             };
 
             TEXTURE2D(_BaseMap);
@@ -42,7 +43,7 @@ Shader "Custom/HeatmapShader"
                 half _HeatRadius;
             CBUFFER_END
 
-            float _Hits[MAX_HITS * 3];
+            float _Hits[128]; // 32 * 4 (x, y, z, intensity)
             int _HitCount;
 
             static const half4 colors[5] =
@@ -64,13 +65,13 @@ Shader "Custom/HeatmapShader"
                 Varyings OUT;
                 OUT.positionHCS = TransformObjectToHClip(IN.positionOS.xyz);
                 OUT.uv = TRANSFORM_TEX(IN.uv, _BaseMap);
+                OUT.positionWS = TransformObjectToWorld(IN.positionOS.xyz);
                 return OUT;
             }
 
-
-            half distsq(float2 a, float2 b)
+            half distsq(float3 pixelPos, float3 heatPoint)
             {
-                half d = distance(a, b) / _HeatRadius;
+                half d = distance(pixelPos, heatPoint) / _HeatRadius;
                 d = saturate(1.0h - d);
                 return d * d;
             }
@@ -96,18 +97,21 @@ Shader "Custom/HeatmapShader"
             {
                 half4 col = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv) * _BaseColor;
 
-                float2 uv = IN.uv;
-
+                float3 worldPos = IN.positionWS;
                 half totalWeight = 0.0h;
 
                 for (int i = 0; i < MAX_HITS; i++)
                 {
                     if (i >= _HitCount) break;
 
-                    float2 p = float2(_Hits[i * 3], _Hits[i * 3 + 1]);
-                    half intensity = _Hits[i * 3 + 2];
+                    float3 heatPoint = float3(
+                        _Hits[i * 4],
+                        _Hits[i * 4 + 1],
+                        _Hits[i * 4 + 2]
+                    );
+                    half intensity = _Hits[i * 4 + 3];
 
-                    totalWeight += distsq(uv, p) * intensity;
+                    totalWeight += distsq(worldPos, heatPoint) * intensity;
                 }
 
                 half3 heat = getHeatForPixel(totalWeight);
