@@ -19,10 +19,10 @@ public class SlowdownMechanic : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.qKey.wasPressedThisFrame)
+        if (Mouse.current.leftButton.wasPressedThisFrame)
             Slowdown();
 
-        if (Keyboard.current.qKey.wasReleasedThisFrame)
+        if (Mouse.current.leftButton.wasReleasedThisFrame)
             Speedup();
 
         StaminaUpdate();
