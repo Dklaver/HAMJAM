@@ -9,6 +9,7 @@
     - Default, TransparentFX, Ignore Raycast, Water, UI, MousePosition
 - Active game object:
   - Name: MANN
+  - Name: Environment2(holes)
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
