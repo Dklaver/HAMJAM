@@ -11,7 +11,6 @@ public class BulletControl : MonoBehaviour
     public float forwardSpeed = 1f;
     public float rotationSpeed = 90f; // degrees per second
     public float cameraDistance = 5f; // degrees per second
-
     public List<GameObject> listOfObjectsToRotate = new List<GameObject>();
 
     private Camera mainCamera;
@@ -55,7 +54,7 @@ public class BulletControl : MonoBehaviour
     public void MoveForward(float speed)
     {
         transform.position += transform.forward * speed * Time.deltaTime;
-        mainCamera.gameObject.transform.position = new (cameraOriginalPosition.x, cameraOriginalPosition.y, transform.position.z - cameraDistance);
+        mainCamera.gameObject.transform.position = new(cameraOriginalPosition.x, cameraOriginalPosition.y, transform.position.z - cameraDistance);
     }
 
     public void RotateObjects()
@@ -63,6 +62,7 @@ public class BulletControl : MonoBehaviour
         foreach (GameObject go in listOfObjectsToRotate)
         {
             go.transform.Rotate(Vector3.forward, rotationSpeed * Time.deltaTime);
+
         }
     }
 
