@@ -4,10 +4,14 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
 using System.Collections;
+using UnityEngine.UIElements;
+using Cursor = UnityEngine.Cursor;
 
 public class BulletControl : MonoBehaviour
 {
     public Transform bulletReference;
+    public Transform planeReference;
+
     public LayerMask planeLayer;
     public float moveSpeed = 10f;
     [SerializeField] private float forwardSpeed = 1f;
@@ -24,12 +28,33 @@ public class BulletControl : MonoBehaviour
         }
     }
     public float rotationSpeed = 90f; // degrees per second
-    public float cameraDistance = 5f; // degrees per second
     public List<GameObject> listOfObjectsToRotate = new List<GameObject>();
+
+    public float cameraXOffset = 0f;
+    public float cameraYOffset = 0f;
+    public float cameraZOffset = 0f;
+
+    public bool freeCameraXMovement = false;
+    public bool freeCameraYMovement = false;
+
+    public float planeZOffset = 0f;
+
+    [UnityEngine.Range(0f, 1f)]
+    public float xMin = 0.1f;
+
+    [UnityEngine.Range(0f, 1f)]
+    public float xMax = 0.9f;
+
+    [UnityEngine.Range(0f, 1f)]
+    public float yMin = 0.1f;
+
+    [UnityEngine.Range(0f, 1f)]
+    public float yMax = 0.9f;
 
     private Camera mainCamera;
     private Vector3 currentTargetWorld;
     private Vector3 cameraOriginalPosition;
+    private Vector3 planeOriginalPosition;
     public static event Action<float> OnSpeedChanged;
 
     void Start()
@@ -37,8 +62,9 @@ public class BulletControl : MonoBehaviour
         mainCamera = Camera.main;
         currentTargetWorld = transform.position;
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = false;
+        Cursor.visible = true;
         cameraOriginalPosition = mainCamera.transform.position;
+        planeOriginalPosition = planeReference.position;
 
         StartCoroutine(RemovePropellerAfterTime());
     }
@@ -75,18 +101,34 @@ public class BulletControl : MonoBehaviour
         Ray ray = mainCamera.ScreenPointToRay(mousePosition);
         Debug.DrawRay(ray.origin, ray.direction * 100f, Color.yellow);
 
-        if (Physics.Raycast(ray, out RaycastHit hit, 100f, planeLayer))
-        {
-            Vector3 localHit = bulletReference.InverseTransformPoint(hit.point);
-            Vector3 newLocalTarget = new Vector3(localHit.x, localHit.y, bulletReference.InverseTransformPoint(transform.position).z);
-            currentTargetWorld = bulletReference.TransformPoint(newLocalTarget);
-        }
+        // Convert screen to viewport space (0 to 1)
+        Vector3 viewportPos = mainCamera.ScreenToViewportPoint(mousePosition);
 
-        transform.position = Vector3.Lerp(transform.position, currentTargetWorld, Time.deltaTime * moveSpeed);
+        // Clamp viewport independently
+        float clampedX = Mathf.Clamp(viewportPos.x, xMin, xMax);
+        float clampedY = Mathf.Clamp(viewportPos.y, yMin, yMax);
+
+        // Convert back to world at fixed distance
+        float distanceFromCamera = Mathf.Abs(mainCamera.transform.position.z - transform.position.z);
+
+        Vector3 worldTarget = mainCamera.ViewportToWorldPoint(
+            new Vector3(clampedX, clampedY, distanceFromCamera)
+        );
+
+        currentTargetWorld = new Vector3(
+            worldTarget.x,
+            worldTarget.y,
+            transform.position.z
+        );
+
+
+        transform.position = Vector3.Lerp(
+            transform.position,
+            currentTargetWorld,
+            Time.deltaTime * moveSpeed
+        );
 
         ForwardSpeed += Time.deltaTime;
-
-
         MoveForward(ForwardSpeed);
     }
 
@@ -98,7 +140,22 @@ public class BulletControl : MonoBehaviour
     public void MoveForward(float speed)
     {
         transform.position += transform.forward * speed * Time.deltaTime;
-        mainCamera.gameObject.transform.position = new(cameraOriginalPosition.x, cameraOriginalPosition.y, transform.position.z - cameraDistance);
+        planeReference.position = new Vector3(planeOriginalPosition.x, planeOriginalPosition.y, transform.position.z - planeZOffset);
+        if (freeCameraXMovement && freeCameraYMovement)
+        {
+            mainCamera.gameObject.transform.position = new(transform.position.x - cameraXOffset, transform.position.y - cameraYOffset, transform.position.z - cameraZOffset);
+        }
+
+        else if (freeCameraXMovement)
+        {
+            mainCamera.gameObject.transform.position = new(transform.position.x - cameraXOffset, cameraOriginalPosition.y - cameraYOffset, transform.position.z - cameraZOffset);
+        }
+        else if (freeCameraYMovement)
+        {
+            mainCamera.gameObject.transform.position = new(cameraOriginalPosition.x - cameraXOffset, transform.position.y - cameraYOffset, transform.position.z - cameraZOffset);
+        }
+        else
+            mainCamera.gameObject.transform.position = new(cameraOriginalPosition.x - cameraXOffset, cameraOriginalPosition.y - cameraYOffset, transform.position.z - cameraZOffset);
     }
 
     public void RotateObjects()
