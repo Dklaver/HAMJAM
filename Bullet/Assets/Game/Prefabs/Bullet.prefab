@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1557137825313785484}
   - component: {fileID: 4621236347338549563}
   - component: {fileID: 5715408940412062246}
+  - component: {fileID: 4454847670735312427}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -90,6 +91,22 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4454847670735312427
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1057723004911227709}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f9aa611c8b2cc9409dfd0fd4919079f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FallingPropeller
+  spinSpeed: 2000
+  spinSlowdownRate: 200
+  gravity: 15
+  tumbleSpeed: 140
 --- !u!1 &1791072629989538816
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,7 +366,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   moveSpeed: 10
-  forwardSpeed: 4
+  forwardSpeed: 40
   rotationSpeed: 40
   cameraDistance: 1.75
   listOfObjectsToRotate:

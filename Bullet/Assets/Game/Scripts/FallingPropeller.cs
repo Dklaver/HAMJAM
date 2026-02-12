@@ -7,7 +7,7 @@ public class FallingPropeller : MonoBehaviour
     public float spinSlowdownRate = 200f;
 
     [Header("Fall")]
-    public float gravity = 9f;
+    public float gravity = 8f;
     public float tumbleSpeed = 200f;
 
     private bool isFalling = false;
@@ -37,20 +37,22 @@ public class FallingPropeller : MonoBehaviour
         }
     }
 
-    public void Detach()
+    public void Detach(Vector3 bulletForwardVelocity)
     {
         isFalling = true;
 
-        // Detach from bullet
         transform.parent = null;
 
-        // Give slight initial push
-        fallVelocity = new Vector3(
-            Random.Range(-1f, 1f),
-            2f,
-            Random.Range(-1f, 1f)
+        // Keep moving forward with the bullet
+        fallVelocity = bulletForwardVelocity;
+
+        // Add a small upward + sideways separation
+        fallVelocity += new Vector3(
+            Random.Range(-0.5f, 0.5f),
+            1.5f,
+            Random.Range(-0.5f, 0.5f)
         );
 
-        Destroy(gameObject, 5f); // cleanup
+        Destroy(gameObject, 5f);
     }
 }

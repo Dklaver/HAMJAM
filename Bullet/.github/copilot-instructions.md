@@ -2,13 +2,13 @@
 - Project name: Bullet
 - Unity version: Unity 6000.3.5f1
 - Active scene:
-  - Name: BulletTesting
+  - Name: StartUp
   - Tags:
     - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController
   - Layers:
     - Default, TransparentFX, Ignore Raycast, Water, UI, MousePosition, Target
 - Active game object:
-  - Name: Bullet
-  - Tag: Untagged
+  - Name: Main Camera
+  - Tag: MainCamera
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
