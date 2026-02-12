@@ -10,9 +10,8 @@ using Cursor = UnityEngine.Cursor;
 public class BulletControl : MonoBehaviour
 {
     public Transform bulletReference;
-    public Transform planeReference;
+    public Transform bulletBox;
 
-    public LayerMask planeLayer;
     public float moveSpeed = 10f;
     [SerializeField] private float forwardSpeed = 1f;
     public float ForwardSpeed
@@ -54,8 +53,18 @@ public class BulletControl : MonoBehaviour
     private Camera mainCamera;
     private Vector3 currentTargetWorld;
     private Vector3 cameraOriginalPosition;
-    private Vector3 planeOriginalPosition;
+
+    private Vector3 boxOriginalPosition;
     public static event Action<float> OnSpeedChanged;
+
+    public bool blockPositiveX;
+    public bool blockNegativeX;
+    public bool blockPositiveY;
+    public bool blockNegativeY;
+
+
+    Vector3 xPositionBeforeLock;
+    Vector3 yPositionBeforeLock;
 
     void Start()
     {
@@ -64,7 +73,7 @@ public class BulletControl : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         cameraOriginalPosition = mainCamera.transform.position;
-        planeOriginalPosition = planeReference.position;
+        boxOriginalPosition = bulletBox.transform.position;
 
         StartCoroutine(RemovePropellerAfterTime());
     }
@@ -121,15 +130,35 @@ public class BulletControl : MonoBehaviour
             transform.position.z
         );
 
-
-        transform.position = Vector3.Lerp(
+        Vector3 target = Vector3.Lerp(
             transform.position,
             currentTargetWorld,
             Time.deltaTime * moveSpeed
         );
 
+        Vector3 delta = target - transform.position;
+
+        // Block based on direction
+        if (delta.x > 0 && blockPositiveX)
+            delta.x = 0;
+
+        if (delta.x < 0 && blockNegativeX)
+            delta.x = 0;
+
+        if (delta.y > 0 && blockPositiveY)
+            delta.y = 0;
+
+        if (delta.y < 0 && blockNegativeY)
+            delta.y = 0;
+
+        transform.position += delta;
+
+
+
         ForwardSpeed += Time.deltaTime;
         MoveForward(ForwardSpeed);
+
+        //CheckLock();
     }
 
     private void LateUpdate()
@@ -140,7 +169,8 @@ public class BulletControl : MonoBehaviour
     public void MoveForward(float speed)
     {
         transform.position += transform.forward * speed * Time.deltaTime;
-        planeReference.position = new Vector3(planeOriginalPosition.x, planeOriginalPosition.y, transform.position.z - planeZOffset);
+        bulletBox.position = new Vector3(boxOriginalPosition.x, boxOriginalPosition.y, transform.position.z);
+
         if (freeCameraXMovement && freeCameraYMovement)
         {
             mainCamera.gameObject.transform.position = new(transform.position.x - cameraXOffset, transform.position.y - cameraYOffset, transform.position.z - cameraZOffset);
@@ -169,10 +199,38 @@ public class BulletControl : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        foreach (ContactPoint contact in collision.contacts)
+        {
+            Vector3 normal = contact.normal;
+
+            // If normal points left, we hit right wall
+            if (normal.x > 0.5f)
+                blockNegativeX = true;
+
+            if (normal.x < -0.5f)
+                blockPositiveX = true;
+
+            if (normal.y > 0.5f)
+                blockNegativeY = true;
+
+            if (normal.y < -0.5f)
+                blockPositiveY = true;
+        }
     }
+
+
+    private void OnCollisionExit(Collision collision)
+    {
+        blockPositiveX = false;
+        blockNegativeX = false;
+        blockPositiveY = false;
+        blockNegativeY = false;
+    }
+
 
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("HITT: " + other.gameObject.name);
     }
+
 }
