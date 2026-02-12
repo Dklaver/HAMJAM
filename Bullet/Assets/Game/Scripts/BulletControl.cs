@@ -45,7 +45,7 @@ public class BulletControl : MonoBehaviour
 
     private IEnumerator RemovePropellerAfterTime()
     {
-        yield return new WaitForSeconds(3f);
+        yield return new WaitForSeconds(2f);
         RemovePropeller();
     }
 
@@ -54,7 +54,16 @@ public class BulletControl : MonoBehaviour
         FallingPropeller prop = GetComponentInChildren<FallingPropeller>();
         if (prop != null)
         {
-            prop.Detach();
+            GameObject propObject = prop.gameObject;
+
+            if (listOfObjectsToRotate.Contains(propObject))
+            {
+                listOfObjectsToRotate.Remove(propObject);
+            }
+
+            Vector3 forwardVelocity = transform.forward * ForwardSpeed;
+            prop.Detach(forwardVelocity);
+
         }
     }
 
