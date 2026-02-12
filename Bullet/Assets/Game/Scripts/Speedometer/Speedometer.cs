@@ -16,7 +16,7 @@ public class Speedometer : MonoBehaviour
 
     private void UpdateSpeed(float newSpeed)
     {
-        SpeedText.text = newSpeed.ToString("F1");
+        SpeedText.text = newSpeed.ToString("F1") + " km/h";
     }
 
     private void UpdateColor()
