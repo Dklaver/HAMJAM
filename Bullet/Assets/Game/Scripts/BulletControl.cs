@@ -2,13 +2,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System;
+using System.Collections;
 
 public class BulletControl : MonoBehaviour
 {
     public Transform bulletReference;
     public LayerMask planeLayer;
     public float moveSpeed = 10f;
-    public float forwardSpeed = 1f;
+    [SerializeField] private float forwardSpeed = 1f;
+    public float ForwardSpeed
+    {
+        get => forwardSpeed;
+        set
+        {
+            if (Mathf.Approximately(forwardSpeed, value))
+                return;
+
+            forwardSpeed = value;
+            OnSpeedChanged?.Invoke(forwardSpeed);
+        }
+    }
     public float rotationSpeed = 90f; // degrees per second
     public float cameraDistance = 5f; // degrees per second
     public List<GameObject> listOfObjectsToRotate = new List<GameObject>();
@@ -16,14 +30,32 @@ public class BulletControl : MonoBehaviour
     private Camera mainCamera;
     private Vector3 currentTargetWorld;
     private Vector3 cameraOriginalPosition;
+    public static event Action<float> OnSpeedChanged;
 
     void Start()
     {
         mainCamera = Camera.main;
         currentTargetWorld = transform.position;
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Cursor.visible = false;
         cameraOriginalPosition = mainCamera.transform.position;
+
+        StartCoroutine(RemovePropellerAfterTime());
+    }
+
+    private IEnumerator RemovePropellerAfterTime()
+    {
+        yield return new WaitForSeconds(3f);
+        RemovePropeller();
+    }
+
+    private void RemovePropeller()
+    {
+        FallingPropeller prop = GetComponentInChildren<FallingPropeller>();
+        if (prop != null)
+        {
+            prop.Detach();
+        }
     }
 
     void Update()
@@ -43,7 +75,10 @@ public class BulletControl : MonoBehaviour
 
         transform.position = Vector3.Lerp(transform.position, currentTargetWorld, Time.deltaTime * moveSpeed);
 
-        MoveForward(forwardSpeed);
+        ForwardSpeed += Time.deltaTime;
+
+
+        MoveForward(ForwardSpeed);
     }
 
     private void LateUpdate()
