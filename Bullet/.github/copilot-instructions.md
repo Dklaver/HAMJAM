@@ -1,8 +1,13 @@
 <!-- UNITY CODE ASSIST INSTRUCTIONS START -->
 - Project name: Bullet
 - Unity version: Unity 6000.3.5f1
+- Active scene:
+  - Tags:
+    - Untagged, Respawn, Finish, EditorOnly, MainCamera, Player, GameController, XCollision, YCollision
+  - Layers:
+    - Default, TransparentFX, Ignore Raycast, Water, UI, MousePositionX, Target, MousePositionY, Player
 - Active game object:
-  - Name: Sphere
+  - Name: LevelManager
   - Tag: Untagged
   - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
