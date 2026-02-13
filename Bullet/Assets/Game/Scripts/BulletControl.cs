@@ -15,7 +15,7 @@ public class BulletControl : MonoBehaviour
     public bool isMovingForward = true;
 
     public float moveSpeed = 10f;
-    [SerializeField] private float forwardSpeed = 1f;
+    [SerializeField] public float forwardSpeed = 1f;
     public float ForwardSpeed
     {
         get => forwardSpeed;
@@ -63,10 +63,6 @@ public class BulletControl : MonoBehaviour
     public bool blockNegativeX;
     public bool blockPositiveY;
     public bool blockNegativeY;
-
-
-    Vector3 xPositionBeforeLock;
-    Vector3 yPositionBeforeLock;
 
     void Start()
     {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class SlowdownMechanic : MonoBehaviour
 {
-    [SerializeField] private float slowValue = 0.2f;
+    [SerializeField] public float slowValue = 0.2f;
     [SerializeField] private float stamina = 100f;
     [SerializeField] private float staminaDrain = 3f;
     [SerializeField] private float staminaRecharge = 1f;
@@ -14,7 +14,7 @@ public class SlowdownMechanic : MonoBehaviour
     [SerializeField] private Volume slowdownVolume;
     [SerializeField] private float volumeLerpSpeed = 5f; // how fast to lerp weight
 
-    private bool isSlowingDown = false;
+    public bool isSlowingDown = false;
     private float targetWeight = 0f;
 
     void Update()
