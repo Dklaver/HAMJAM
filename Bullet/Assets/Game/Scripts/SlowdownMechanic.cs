@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SlowdownMechanic : MonoBehaviour
 {
     [SerializeField] public float slowValue = 0.2f;
-    [SerializeField] private float stamina = 100f;
+    [SerializeField] public float stamina = 100f;
     [SerializeField] private float staminaDrain = 3f;
     [SerializeField] private float staminaRecharge = 1f;
 

@@ -3,7 +3,9 @@ using UnityEngine;
 public class Hole : MonoBehaviour
 {
     // Duration of scaling animation
-    public float rewardValue = 15;
+    public float rewardValueSpeed = 15;
+    public float rewardValueEnergy = 15;
+
     public float scaleDuration = 0.07f;
     [SerializeField] SlowdownMechanic slowdownMechanic;
 

@@ -278,6 +278,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::HoleLogic
   slowDownAmount: 1.5
   bullet: {fileID: 1989055903294381829}
+  slowdownMechanic: {fileID: 2615127623869927639}
 --- !u!1 &8798751489439878526
 GameObject:
   m_ObjectHideFlags: 0

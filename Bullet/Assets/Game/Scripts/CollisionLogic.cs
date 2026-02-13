@@ -8,6 +8,9 @@ public class CollisionLogic : MonoBehaviour
     [SerializeField]
     private BulletControl bullet;
 
+    [SerializeField]
+    private SlowdownMechanic slowdownMechanic;
+
     private Hole latestRewardHitObject;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -23,7 +26,8 @@ public class CollisionLogic : MonoBehaviour
 
     void SpeedUp()
     {
-        bullet.forwardSpeed += latestRewardHitObject.rewardValue;
+        bullet.forwardSpeed += latestRewardHitObject.rewardValueSpeed;
+        slowdownMechanic.stamina += latestRewardHitObject.rewardValueEnergy;
     }
 
     void SlowDown()
