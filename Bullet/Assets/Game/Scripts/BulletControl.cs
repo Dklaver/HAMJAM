@@ -12,6 +12,8 @@ public class BulletControl : MonoBehaviour
     public Transform bulletReference;
     public Transform bulletBox;
 
+    public bool isMovingForward = true;
+
     public float moveSpeed = 10f;
     [SerializeField] private float forwardSpeed = 1f;
     public float ForwardSpeed
@@ -154,8 +156,9 @@ public class BulletControl : MonoBehaviour
         transform.position += delta;
 
 
+        if (isMovingForward)
+            ForwardSpeed += Time.deltaTime;
 
-        ForwardSpeed += Time.deltaTime;
         MoveForward(ForwardSpeed);
 
         //CheckLock();
