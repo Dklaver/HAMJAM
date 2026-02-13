@@ -2,7 +2,7 @@
 - Project name: Bullet
 - Unity version: Unity 6000.3.5f1
 - Active game object:
-  - Name: Sphere
+  - Name: Bullet
   - Tag: Untagged
-  - Layer: Default
+  - Layer: Player
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
