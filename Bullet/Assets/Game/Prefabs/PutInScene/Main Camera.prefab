@@ -751,7 +751,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 14
+      value: 12.5
       mode: 0
       spread: 0
       speed:
@@ -5587,7 +5587,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 14.8
+      value: 12.8
       mode: 0
       spread: 0
       speed:
@@ -9701,7 +9701,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.43683282, y: 0.43683285, z: 0.4368328}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5381867962699788885}
@@ -9829,7 +9829,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7455746874072394987
 Transform:
   m_ObjectHideFlags: 0
@@ -10563,7 +10563,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 14
+      value: 12.15
       mode: 0
       spread: 0
       speed:

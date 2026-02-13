@@ -35,8 +35,8 @@ public class CollisionLogic : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Hole"))
         {
-            SpeedUp();
             latestRewardHitObject = other.gameObject.GetComponent<Hole>();
+            SpeedUp();
             Debug.Log("SPEED UP");
         }
 
