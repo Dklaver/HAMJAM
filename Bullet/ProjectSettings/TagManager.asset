@@ -6,11 +6,13 @@ TagManager:
   tags:
   - XCollision
   - YCollision
+  - Hole
+  - Obstacle
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Hit
   - Water
   - UI
   - MousePositionX
