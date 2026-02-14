@@ -17,12 +17,11 @@ public class GameManager : MonoBehaviour
     void Awake()
     {
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+            SoundManager.Instance.StopLoop(Sound.PointsCountUp);
     }
 
     // Update is called once per frame
@@ -48,6 +47,16 @@ public class GameManager : MonoBehaviour
 
     public void MainMenu()
     {
+        try
+        {
+            SoundManager.Instance.StopLoop(Sound.PointsCountUp);
+
+        }
+
+        catch
+        {
+
+        }
         SceneManager.LoadScene(0);
     }
 
