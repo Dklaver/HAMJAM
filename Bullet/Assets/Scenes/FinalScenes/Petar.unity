@@ -4609,6 +4609,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Speedometer
       objectReference: {fileID: 0}
+    - target: {fileID: 3115288012261629036, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1858872788}
+    - target: {fileID: 3115288012261629036, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayOneShot
+      objectReference: {fileID: 0}
     - target: {fileID: 3525209262156910099, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -4701,6 +4709,14 @@ PrefabInstance:
       propertyPath: audioSource
       value: 
       objectReference: {fileID: 1858872788}
+    - target: {fileID: 6843842851090613558, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1858872788}
+    - target: {fileID: 6843842851090613558, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
+      propertyPath: m_Delegates.Array.data[0].callback.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: PlayOneShot
+      objectReference: {fileID: 0}
     - target: {fileID: 7025242464109680228, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
       propertyPath: speedLines100km
       value: 

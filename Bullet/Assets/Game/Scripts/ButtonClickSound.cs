@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class ButtonClickSound : MonoBehaviour
 {
@@ -24,4 +25,5 @@ public class ButtonClickSound : MonoBehaviour
         if (clickSound != null && audioSource != null)
             audioSource.PlayOneShot(clickSound);
     }
+
 }
