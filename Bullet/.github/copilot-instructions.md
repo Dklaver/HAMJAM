@@ -2,7 +2,7 @@
 - Project name: Bullet
 - Unity version: Unity 6000.3.5f1
 - Active game object:
-  - Name: SphereReward
-  - Tag: Hole
-  - Layer: Hit
+  - Name: Main Camera
+  - Tag: MainCamera
+  - Layer: Default
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
