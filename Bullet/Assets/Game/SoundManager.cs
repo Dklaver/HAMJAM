@@ -50,6 +50,9 @@ public class SoundManager : MonoBehaviour
 
     readonly Dictionary<Sound, AudioSource> activeLoops = new();
 
+    const string MUSIC_PARAM = "MusicVolume";
+    const string MUSIC_PREF = "MusicVolume";
+
 
     void Start() => StartCoroutine(MusicLoop());   // kick it off
 
@@ -84,6 +87,41 @@ public class SoundManager : MonoBehaviour
             sfxSources.Add(src);
         }
     }
+    void PlayRandomMusic()
+    {
+        if (musicClips == null || musicClips.Length == 0)
+            return;
+
+        int idx;
+        do
+        {
+            idx = UnityEngine.Random.Range(0, musicClips.Length);
+        }
+        while (musicClips.Length > 1 && idx == lastMusic);
+
+        lastMusic = idx;
+        musicSource.clip = musicClips[idx];
+        musicSource.Play();
+    }
+    void ApplyMusicVolume()
+    {
+        if (musicBus == null)
+            return;
+
+        // Convert 0–1 slider value to decibels
+        float db = Mathf.Log10(Mathf.Max(musicVolume, 0.0001f)) * 20f;
+
+        AudioMixer mixer = musicBus.audioMixer;
+        mixer.SetFloat(MUSIC_PARAM, db);
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        musicVolume = Mathf.Clamp01(value);
+        ApplyMusicVolume();
+        PlayerPrefs.SetFloat(MUSIC_PREF, musicVolume);
+    }
+
 
     IEnumerator MusicLoop()
     {
