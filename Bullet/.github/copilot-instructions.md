@@ -2,7 +2,7 @@
 - Project name: Bullet
 - Unity version: Unity 6000.3.5f1
 - Active game object:
-  - Name: UIAudioManager
-  - Tag: Untagged
-  - Layer: Default
+  - Name: SphereReward
+  - Tag: Hole
+  - Layer: Hit
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
