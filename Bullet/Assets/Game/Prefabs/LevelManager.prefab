@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4948273821306125580}
   - component: {fileID: 349691641341035865}
+  - component: {fileID: 4559593105843925470}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -44,3 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0927e1425bb48b34b83bd11ff36636bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelSelection
+--- !u!114 &4559593105843925470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7697938247732541523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7eb4ef16bedbe343930afe0a1861c6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'

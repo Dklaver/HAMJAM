@@ -751,7 +751,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 12.5
+      value: 12.9
       mode: 0
       spread: 0
       speed:
@@ -5587,7 +5587,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 12.8
+      value: 13.3
       mode: 0
       spread: 0
       speed:
@@ -10563,7 +10563,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 12.15
+      value: 12.7
       mode: 0
       spread: 0
       speed:

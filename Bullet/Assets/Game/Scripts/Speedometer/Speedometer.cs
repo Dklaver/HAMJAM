@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Microsoft.Unity.VisualStudio.Editor;
 
 public class Speedometer : MonoBehaviour
 {
@@ -7,6 +8,7 @@ public class Speedometer : MonoBehaviour
     [SerializeField] private ParticleSystem speedLinesUnder100km;
     [SerializeField] private ParticleSystem speedLines100km;
     [SerializeField] private ParticleSystem speedLines200km;
+    [SerializeField] private GameObject finalScoreMenu;
 
     private float currentSpeed;
     private RectTransform rectTransform;
@@ -14,28 +16,47 @@ public class Speedometer : MonoBehaviour
     private bool speedLines200Playing = false;
     private bool speedLinesUnder100Playing = false;
 
+    private bool hasLost = false;
+
     private void Awake()
     {
         rectTransform = SpeedText.GetComponent<RectTransform>();
+        if (finalScoreMenu != null)
+        {
+            finalScoreMenu.SetActive(false);
+        }
     }
     private void OnEnable()
     {
         BulletControl.OnSpeedChanged += UpdateSpeed;
+        BulletControl.OnLost += ShowFinalScore;
     }
 
     private void OnDisable()
     {
         BulletControl.OnSpeedChanged -= UpdateSpeed;
+        BulletControl.OnLost -= ShowFinalScore;
+    }
+    private void ShowFinalScore()
+    {
+        StopSpeedLinesUnder100();
+        StopSpeedLines100();
+        StopSpeedLines200();
+
+        finalScoreMenu.SetActive(true);
+        hasLost = true;
+
     }
 
     private void UpdateSpeed(float newSpeed)
     {
-        currentSpeed = newSpeed * 2.2369f;
+        currentSpeed = newSpeed * 10f;
         SpeedText.text = currentSpeed.ToString("F1") + " km/h";
     }
 
     private void Update()
     {
+        if (hasLost) return;
         UpdateColor();
         UpdateVFX();
     }
@@ -84,7 +105,7 @@ public class Speedometer : MonoBehaviour
     }
     private void PlaySpeedLinesUnder100()
     {
-        if (!speedLines100Playing)
+        if (!speedLinesUnder100Playing)
         {
             speedLinesUnder100km.Play();
             speedLinesUnder100Playing = true;

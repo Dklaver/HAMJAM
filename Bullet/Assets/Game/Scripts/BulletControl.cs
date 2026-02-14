@@ -64,16 +64,67 @@ public class BulletControl : MonoBehaviour
     public bool blockPositiveY;
     public bool blockNegativeY;
 
+    [SerializeField] private Rigidbody rb;
+    public static event Action OnLost;
+    [SerializeField] private float loseSpeedKMH = 50f;
+
+    private bool hasLost = false;
+
     void Start()
     {
         mainCamera = Camera.main;
         currentTargetWorld = transform.position;
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Cursor.visible = false;
         cameraOriginalPosition = mainCamera.transform.position;
         boxOriginalPosition = bulletBox.transform.position;
 
         StartCoroutine(RemovePropellerAfterTime());
+    }
+
+    private void CheckLoseCondition()
+    {
+        float speedKMH = ForwardSpeed * 10f;
+
+        if (hasLost)
+            return;
+
+        if (speedKMH < loseSpeedKMH)
+        {
+            TriggerLose();
+        }
+    }
+
+    private void TriggerLose()
+    {
+        hasLost = true;
+
+        // Stop movement logic
+        isMovingForward = false;
+
+        // Enable physics fall
+        rb.isKinematic = false;
+        rb.useGravity = true;
+
+        // Optional: keep some forward momentum
+        rb.linearVelocity = transform.forward * ForwardSpeed;
+
+        // Stop rotating visuals
+        listOfObjectsToRotate.Clear();
+
+        // Unlock cursor
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        StartCoroutine(LoseConditionUI());
+
+    }
+
+    private IEnumerator LoseConditionUI()
+    {
+        yield return new WaitForSeconds(1.5f);
+        // Notify UI
+        OnLost?.Invoke();
     }
 
     private IEnumerator RemovePropellerAfterTime()
@@ -102,6 +153,9 @@ public class BulletControl : MonoBehaviour
 
     void Update()
     {
+        if (hasLost)
+            return;
+
         if (Mouse.current == null) return;
 
         Vector2 mousePosition = Mouse.current.position.ReadValue();
@@ -153,9 +207,10 @@ public class BulletControl : MonoBehaviour
 
 
         if (isMovingForward)
-            ForwardSpeed += Time.deltaTime;
+            ForwardSpeed -= Time.deltaTime;
 
         MoveForward(ForwardSpeed);
+        CheckLoseCondition();
 
         //CheckLock();
     }

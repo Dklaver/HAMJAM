@@ -6,12 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/StartUp.unity
+    path: Assets/Scenes/FinalScenes/StartUp.unity
     guid: b337d428125cc464fa74f6657d8d8783
   - enabled: 1
     path: Assets/Scenes/FinalScenes/Ruslan.unity
     guid: ae72f930f81e47b4c9fd464f77caa228
   - enabled: 1
+    path: Assets/Scenes/FinalScenes/Petar.unity
+    guid: 366bd81462da41846a901a9d71382011
+  - enabled: 0
     path: Assets/Scenes/BulletTesting.unity
     guid: dc83548a69290984ca7b5de3009285d2
   - enabled: 0
