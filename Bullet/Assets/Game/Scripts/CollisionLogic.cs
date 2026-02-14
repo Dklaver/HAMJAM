@@ -26,7 +26,7 @@ public class CollisionLogic : MonoBehaviour
     void SlowDown()
     {
         bullet.forwardSpeed -= slowDownAmount;
-
+        SoundManager.Instance.PlaySound(Sound.Hit);
         TriggerSlowdownVolume();
     }
 
@@ -36,6 +36,7 @@ public class CollisionLogic : MonoBehaviour
         {
             latestRewardHitObject = other.GetComponent<Hole>();
             SpeedUp();
+            SoundManager.Instance.PlaySound(Sound.Speedup);
             Debug.Log("SPEED UP");
         }
 

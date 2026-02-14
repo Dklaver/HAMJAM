@@ -46,6 +46,11 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    public void MainMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
+
     private IEnumerator LoseConditionUI()
     {
         yield return new WaitForSeconds(1.5f);
@@ -97,7 +102,7 @@ public class GameManager : MonoBehaviour
             return 0f;
 
         // Normalize inputs
-        float speedValue = Mathf.InverseLerp(5f, 100f, speed);
+        float speedValue = Mathf.InverseLerp(5f, 100f, speed); 
         float hitValue = hit / 4f;
 
         // Weighted result

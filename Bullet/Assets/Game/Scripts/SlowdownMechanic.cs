@@ -33,6 +33,9 @@ public class SlowdownMechanic : MonoBehaviour
     {
         if (stamina > 0)
         {
+            SoundManager.Instance.PlaySound(Sound.SlowdownActivation);
+            SoundManager.Instance.PlayLoop(Sound.SlowdownRunning);
+
             Time.timeScale = slowValue;
             isSlowingDown = true;
             targetWeight = 1f;
@@ -45,6 +48,7 @@ public class SlowdownMechanic : MonoBehaviour
     {
         if (!isSlowingDown) return;
 
+        SoundManager.Instance.StopLoop(Sound.SlowdownRunning);
         Time.timeScale = 1f;
         isSlowingDown = false;
         targetWeight = 0f;

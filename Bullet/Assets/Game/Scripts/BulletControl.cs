@@ -69,6 +69,16 @@ public class BulletControl : MonoBehaviour
 
     public bool hasLost = false;
 
+    private void OnEnable()
+    {
+        SoundManager.Instance.PlayLoop(Sound.Wind);
+    }
+
+    private void OnDisable()
+    {
+        SoundManager.Instance.StopLoop(Sound.Wind);
+    }
+
     void Start()
     {
         mainCamera = Camera.main;

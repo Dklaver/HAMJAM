@@ -50,6 +50,8 @@ public class StartingCutscene : MonoBehaviour
         yield return new WaitForSeconds(0.8f);
         pistolSlidAnimator.SetTrigger("Empty");
         pistolSlidAnimator.SetTrigger("Reload");
+        SoundManager.Instance.PlaySound(Sound.Gunshot);
+
         // Wait before camera move
         yield return new WaitForSeconds(1f);
 

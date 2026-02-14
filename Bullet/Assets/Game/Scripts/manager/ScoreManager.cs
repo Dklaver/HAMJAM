@@ -44,6 +44,12 @@ public class ScoreManager : MonoBehaviour
         if (scoreRoutine != null)
             StopCoroutine(scoreRoutine);
 
+        if (finalScore > 0)
+            SoundManager.Instance.PlaySound(Sound.GameWin);
+
+        else 
+            SoundManager.Instance.PlaySound(Sound.GameLose);
+
         scoreRoutine = StartCoroutine(AnimateFinalScore());
     }
 
@@ -80,6 +86,8 @@ public class ScoreManager : MonoBehaviour
 
         int targetScore = Convert.ToInt32(finalScore);
         int displayedScore = 0;
+        SoundManager.Instance.PlayLoop(Sound.PointsCountUp);
+
 
         while (timer < duration)
         {
@@ -98,6 +106,7 @@ public class ScoreManager : MonoBehaviour
 
         // Ensure exact final value
         finalScoreText.text = targetScore + " Points";
+        SoundManager.Instance.StopLoop(Sound.PointsCountUp);
 
         // Save best score AFTER animation finishes
         SaveBestScore(targetScore);
