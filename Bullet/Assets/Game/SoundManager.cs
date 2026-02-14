@@ -14,14 +14,15 @@ public enum Sound
     Hit,
     Speedup,
     Gunshot,
-    PointsCountUp
+    PointsCountUp,
+    HitTarget
 }
 
-[Serializable]          // visible in Inspector
+[Serializable]
 public struct SoundEntry
 {
-    public Sound id;            // enum tag
-    public AudioClip[] clips;   // drag 1-N clips here
+    public Sound id;
+    public AudioClip[] clips;
 }
 
 public class SoundManager : MonoBehaviour
@@ -29,49 +30,71 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     [Header("Music playlist")]
-    public AudioClip[] musicClips;          // drag ~10 tracks here
+    public AudioClip[] musicClips;
     [Range(0f, 3f)] public float musicFade = .5f;
     [Range(0f, 1f)] public float musicVolume = 0.7f;
 
+    [Header("SFX Volume")]
+    [Range(0f, 1f)] public float sfxVolume = 1f;
+
     [Header("SFX list")]
-    public SoundEntry[] sfxEntries;     // <<< drag pairs here
+    public SoundEntry[] sfxEntries;
 
     [Range(1, 32)] public int sfxVoices = 8;
     public AudioMixerGroup musicBus, sfxBus;
 
     readonly Dictionary<Sound, AudioClip[]> sfx = new();
     readonly List<AudioSource> sfxSources = new();
+
     AudioSource musicSource, b;
     int lastMusic = -1;
     bool toggle = false;
 
-    bool gameOver = false;     // are we in the end-screen state?
-    bool gamePaused = false;   // did we pause music ourselves?
+    bool gameOver = false;
+    bool gamePaused = false;
 
     readonly Dictionary<Sound, AudioSource> activeLoops = new();
 
     const string MUSIC_PARAM = "MusicVolume";
+    const string SFX_PARAM = "SFXVolume";
+
     const string MUSIC_PREF = "MusicVolume";
+    const string SFX_PREF = "SFXVolume";
 
-
-    void Start() => StartCoroutine(MusicLoop());   // kick it off
+    void Start()
+    {
+        StartCoroutine(MusicLoop());
+    }
 
     void Awake()
     {
-        if (Instance != null) { Destroy(gameObject); return; }
-        Instance = this; DontDestroyOnLoad(gameObject);
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        // build map once
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        // Build SFX dictionary
         foreach (var e in sfxEntries)
             if (e.clips != null && e.clips.Length > 0)
                 sfx[e.id] = e.clips;
 
-        // music source
+        // Music source
         musicSource = gameObject.AddComponent<AudioSource>();
         musicSource.outputAudioMixerGroup = musicBus;
         musicSource.loop = true;
 
-        // start with a random track right away (optional — the coroutine will keep shuffling)
+        // Load saved volumes
+        musicVolume = PlayerPrefs.GetFloat(MUSIC_PREF, musicVolume);
+        sfxVolume = PlayerPrefs.GetFloat(SFX_PREF, sfxVolume);
+
+        ApplyMusicVolume();
+        ApplySfxVolume();
+
+        // Start random music
         if (musicClips.Length > 0)
         {
             lastMusic = UnityEngine.Random.Range(0, musicClips.Length);
@@ -79,7 +102,7 @@ public class SoundManager : MonoBehaviour
             musicSource.Play();
         }
 
-        // SFX pool
+        // Create SFX pool
         for (int i = 0; i < sfxVoices; i++)
         {
             var src = gameObject.AddComponent<AudioSource>();
@@ -87,32 +110,15 @@ public class SoundManager : MonoBehaviour
             sfxSources.Add(src);
         }
     }
-    void PlayRandomMusic()
-    {
-        if (musicClips == null || musicClips.Length == 0)
-            return;
 
-        int idx;
-        do
-        {
-            idx = UnityEngine.Random.Range(0, musicClips.Length);
-        }
-        while (musicClips.Length > 1 && idx == lastMusic);
+    // ================= MUSIC =================
 
-        lastMusic = idx;
-        musicSource.clip = musicClips[idx];
-        musicSource.Play();
-    }
     void ApplyMusicVolume()
     {
-        if (musicBus == null)
-            return;
+        if (musicBus == null) return;
 
-        // Convert 0–1 slider value to decibels
         float db = Mathf.Log10(Mathf.Max(musicVolume, 0.0001f)) * 20f;
-
-        AudioMixer mixer = musicBus.audioMixer;
-        mixer.SetFloat(MUSIC_PARAM, db);
+        musicBus.audioMixer.SetFloat(MUSIC_PARAM, db);
     }
 
     public void SetMusicVolume(float value)
@@ -120,45 +126,31 @@ public class SoundManager : MonoBehaviour
         musicVolume = Mathf.Clamp01(value);
         ApplyMusicVolume();
         PlayerPrefs.SetFloat(MUSIC_PREF, musicVolume);
+        PlayerPrefs.Save();
     }
-
 
     IEnumerator MusicLoop()
     {
-        // assume you’ve already initialized AudioSources a & b, and a started playing
         while (true)
         {
-            int nextIdx = PickNewTrack();     // ← now you have a valid index
+            int nextIdx = PickNewTrack();
             if (nextIdx < 0) yield break;
 
-            var nextSource = toggle ? musicSource : b;
-            var prevSource = toggle ? b : musicSource;
+            yield return new WaitForSeconds(
+                Mathf.Max(0f, musicSource.clip.length - musicFade)
+            );
 
-            nextSource.clip = musicClips[nextIdx];
-            nextSource.volume = 0f;
-            nextSource.Play();
-
-            // fade-out → swap → fade-in
-            yield return FadeMusic(to: 0f, musicFade);
             musicSource.clip = musicClips[nextIdx];
             musicSource.Play();
-            yield return FadeMusic(to: 1f, musicFade);
-
-            toggle = !toggle;
-            yield return new WaitForSeconds(nextSource.clip.length - musicFade);
         }
     }
 
-    /// <summary>
-    /// Picks a random index into musicClips that isn’t the same as lastMusic.
-    /// </summary>
     int PickNewTrack()
     {
         if (musicClips == null || musicClips.Length == 0)
             return -1;
 
         int idx;
-        // if there’s more than one clip, avoid repeating
         if (musicClips.Length > 1)
         {
             do
@@ -167,75 +159,53 @@ public class SoundManager : MonoBehaviour
             }
             while (idx == lastMusic);
         }
-        else
-        {
-            idx = 0;
-        }
+        else idx = 0;
 
-        lastMusic = idx;    // remember for next time
+        lastMusic = idx;
         return idx;
     }
 
+    // ================= SFX =================
 
-    IEnumerator FadeMusic(float to, float time)
+    void ApplySfxVolume()
     {
-        float start = musicSource.volume;
-        float target = to * musicVolume;        // respect master slider
-        for (float t = 0; t < time; t += Time.deltaTime)
-        {
-            musicSource.volume = Mathf.Lerp(start, target, t / time);
-            yield return null;
-        }
-        musicSource.volume = target;
+        if (sfxBus == null) return;
+
+        float db = Mathf.Log10(Mathf.Max(sfxVolume, 0.0001f)) * 20f;
+        sfxBus.audioMixer.SetFloat(SFX_PARAM, db);
     }
 
-    /* ----------  API  ---------- */
+    public void SetSfxVolume(float value)
+    {
+        sfxVolume = Mathf.Clamp01(value);
+        ApplySfxVolume();
+        PlayerPrefs.SetFloat(SFX_PREF, sfxVolume);
+        PlayerPrefs.Save();
+    }
+
+    // ================= PLAYING SOUNDS =================
+
     public void PlaySound(Sound id, float vol = 1f)
     {
-        if (!sfx.TryGetValue(id, out var clips) || clips.Length == 0) return;
+        if (!sfx.TryGetValue(id, out var clips) || clips.Length == 0)
+            return;
 
-        // choose a random variant
         var clip = clips[UnityEngine.Random.Range(0, clips.Length)];
         GetFreeSfxSource().PlayOneShot(clip, vol);
     }
 
-    /* ---------- public controls ---------- */
-    public void SetPaused(bool paused)
-    {
-        if (gamePaused == paused) return;
-        gamePaused = paused;
-
-        if (paused)
-        {
-            musicSource.Pause();
-            foreach (var s in sfxSources) s.Pause();
-        }
-        else
-        {
-            musicSource.UnPause();
-            foreach (var s in sfxSources) s.UnPause();
-        }
-    }
-
-    /* helpers */
     AudioSource GetFreeSfxSource()
     {
         foreach (var s in sfxSources)
             if (!s.isPlaying) return s;
+
         return sfxSources[UnityEngine.Random.Range(0, sfxSources.Count)];
     }
 
-
-    /* … later … reset when a new round starts … */
-    public void ResetAudio()
-    {
-        gameOver = false;
-        musicSource.UnPause();
-    }
+    // ================= LOOPS =================
 
     public void PlayLoop(Sound id, float vol = 1f)
     {
-        // already playing → do nothing
         if (activeLoops.ContainsKey(id))
             return;
 
@@ -253,27 +223,39 @@ public class SoundManager : MonoBehaviour
         activeLoops[id] = src;
     }
 
-
     public void StopLoop(Sound id)
     {
         if (!activeLoops.TryGetValue(id, out var src))
             return;
 
-        try
-        {
-            src.loop = false;
-            src.Stop();
-            src.clip = null;
-
-            activeLoops.Remove(id);
-        }
-
-        catch (Exception ex)
-        {
-            Debug.LogError("NO NEED TO TOUCH: " + ex.Message);
-        }
-
+        src.loop = false;
+        src.Stop();
+        src.clip = null;
+        activeLoops.Remove(id);
     }
 
+    // ================= PAUSE =================
 
+    public void SetPaused(bool paused)
+    {
+        if (gamePaused == paused) return;
+        gamePaused = paused;
+
+        if (paused)
+        {
+            musicSource.Pause();
+            foreach (var s in sfxSources) s.Pause();
+        }
+        else
+        {
+            musicSource.UnPause();
+            foreach (var s in sfxSources) s.UnPause();
+        }
+    }
+
+    public void ResetAudio()
+    {
+        gameOver = false;
+        musicSource.UnPause();
+    }
 }

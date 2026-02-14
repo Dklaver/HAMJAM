@@ -50,6 +50,7 @@ public class HeatmapHitDetector : MonoBehaviour
         Debug.Log("Color hit: " + colorHit);
         int damage = GetValueForColor(colorHit);
 
+        SoundManager.Instance.PlaySound(Sound.HitTarget);
         scoreManager.UpdateScore(damage);
         GameManager.Instance.EndGame();
     }

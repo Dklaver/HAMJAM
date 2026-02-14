@@ -23,7 +23,7 @@ public class Tutorial : MonoBehaviour
     {
         if (Time.timeScale == 0f)
         {
-            if (Keyboard.current.eKey.wasPressedThisFrame)
+            if (Mouse.current.rightButton.wasPressedThisFrame)
             {
                 Time.timeScale = 1f;
                 slowdownMechanic.enabled = true;
@@ -40,12 +40,12 @@ public class Tutorial : MonoBehaviour
             slowdownMechanic.enabled = false;
             Time.timeScale = 0f;
             tutorialText.gameObject.SetActive(true);
-            tutorialText.text = text1 + "\n\n Press E to continue.";
+            tutorialText.text = text1 + "\n\n Press 'Right Mouse Button' to continue.";
 
 
             if (i > 0)
             {
-                tutorialText.text = text2 + "\n\n Press E to continue.";
+                tutorialText.text = text2 + "\n\n Press 'Right Mouse Button' to continue.";
                 i = 0;
             }
         }

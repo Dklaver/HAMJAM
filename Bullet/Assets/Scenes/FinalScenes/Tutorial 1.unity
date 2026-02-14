@@ -22511,7 +22511,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Tutorial
   tutorialText: {fileID: 1210600215}
   slowdownMechanic: {fileID: 3136420961611748163}
-  text1: Speed is important. To increase it, go through the yellow rectangle inside
+  text1: Speed is important. To increase it, go through the blue rectangle inside
     the fence. \nWatch out, if you hit the obstacle, you will slow down!
   text2: You have to hit the person. There is a heatmap on where you will get most
     points.
