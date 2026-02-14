@@ -64,11 +64,10 @@ public class BulletControl : MonoBehaviour
     public bool blockPositiveY;
     public bool blockNegativeY;
 
-    [SerializeField] private Rigidbody rb;
-    public static event Action OnLost;
+    [SerializeField] public Rigidbody rb;
     [SerializeField] private float loseSpeedKMH = 50f;
 
-    private bool hasLost = false;
+    public bool hasLost = false;
 
     void Start()
     {
@@ -91,41 +90,10 @@ public class BulletControl : MonoBehaviour
 
         if (speedKMH < loseSpeedKMH)
         {
-            TriggerLose();
+            GameManager.Instance.EndGame();
         }
     }
 
-    private void TriggerLose()
-    {
-        hasLost = true;
-
-        // Stop movement logic
-        isMovingForward = false;
-
-        // Enable physics fall
-        rb.isKinematic = false;
-        rb.useGravity = true;
-
-        // Optional: keep some forward momentum
-        rb.linearVelocity = transform.forward * ForwardSpeed;
-
-        // Stop rotating visuals
-        listOfObjectsToRotate.Clear();
-
-        // Unlock cursor
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        StartCoroutine(LoseConditionUI());
-
-    }
-
-    private IEnumerator LoseConditionUI()
-    {
-        yield return new WaitForSeconds(1.5f);
-        // Notify UI
-        OnLost?.Invoke();
-    }
 
     private IEnumerator RemovePropellerAfterTime()
     {

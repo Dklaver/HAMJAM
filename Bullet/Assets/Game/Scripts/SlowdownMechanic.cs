@@ -41,7 +41,7 @@ public class SlowdownMechanic : MonoBehaviour
             Speedup();
     }
 
-    void Speedup()
+    public void Speedup()
     {
         if (!isSlowingDown) return;
 

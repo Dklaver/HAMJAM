@@ -39,10 +39,9 @@ public class CollisionLogic : MonoBehaviour
             Debug.Log("SPEED UP");
         }
 
-        if (other.CompareTag("Obstacle"))
+        if (other.CompareTag("End"))
         {
-            SlowDown();
-            Debug.Log("Hit an obstacle");
+            GameManager.Instance.EndGame();
         }
     }
 
@@ -51,7 +50,7 @@ public class CollisionLogic : MonoBehaviour
         if (other.gameObject.CompareTag("Obstacle"))
         {
             SlowDown();
-            Debug.Log("Hit an obstacle");
+            Debug.Log("Hit an obstacle " + other.gameObject.name);
         }
     }
 

@@ -29,13 +29,13 @@ public class Speedometer : MonoBehaviour
     private void OnEnable()
     {
         BulletControl.OnSpeedChanged += UpdateSpeed;
-        BulletControl.OnLost += ShowFinalScore;
+        GameManager.OnLost += ShowFinalScore;
     }
 
     private void OnDisable()
     {
         BulletControl.OnSpeedChanged -= UpdateSpeed;
-        BulletControl.OnLost -= ShowFinalScore;
+        GameManager.OnLost -= ShowFinalScore;
     }
     private void ShowFinalScore()
     {

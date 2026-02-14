@@ -8,6 +8,7 @@ TagManager:
   - YCollision
   - Hole
   - Obstacle
+  - End
   layers:
   - Default
   - TransparentFX

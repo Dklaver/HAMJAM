@@ -51,6 +51,7 @@ public class HeatmapHitDetector : MonoBehaviour
         int damage = GetValueForColor(colorHit);
 
         scoreManager.UpdateScore(damage);
+        GameManager.Instance.EndGame();
     }
 
     private HeatmapColors GetColor(float heat)
