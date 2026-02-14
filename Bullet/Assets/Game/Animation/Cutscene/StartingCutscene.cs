@@ -46,8 +46,9 @@ public class StartingCutscene : MonoBehaviour
         // Wait before firing
         yield return new WaitForSeconds(1f);
         Fire(); // EVERYTHING happens together here
-
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(0.2f);
+        fakeBulletAnimator.SetTrigger("Shoot");
+        yield return new WaitForSeconds(0.3f);
         pistolSlidAnimator.SetTrigger("Empty");
         pistolSlidAnimator.SetTrigger("Reload");
         SoundManager.Instance.PlaySound(Sound.Gunshot);
@@ -83,7 +84,6 @@ public class StartingCutscene : MonoBehaviour
 
         // Start animations in same frame
 
-        fakeBulletAnimator.SetTrigger("Shoot");
     }
 
     // ----------------------------

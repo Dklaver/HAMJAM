@@ -9,6 +9,7 @@ TagManager:
   - Hole
   - Obstacle
   - End
+  - Tutorial
   layers:
   - Default
   - TransparentFX

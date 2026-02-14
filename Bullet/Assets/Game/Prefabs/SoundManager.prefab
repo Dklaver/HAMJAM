@@ -45,9 +45,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   musicClips:
-  - {fileID: 0}
+  - {fileID: 8300000, guid: 16142326b4d26ac41b0590bf7b1b34e7, type: 3}
+  - {fileID: 8300000, guid: 10263e366bfcf064e8c684293c35c082, type: 3}
+  - {fileID: 8300000, guid: a4bc2b5d9c5c1874e808ecfcee1b9ae6, type: 3}
+  - {fileID: 8300000, guid: 5965755ed832d4c449421b5aecd72fb0, type: 3}
+  - {fileID: 8300000, guid: 5c9af15a70fd2d14e901eba9a8a48c65, type: 3}
   musicFade: 0.5
-  musicVolume: 0.7
+  musicVolume: 0.1
   sfxEntries:
   - id: 3
     clips:
@@ -75,7 +79,7 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 2dfb802fc4306184e8f54b3a4f1e0ce7, type: 3}
   - id: 8
     clips:
-    - {fileID: 8300000, guid: 89f5d00e355861e49a0e47be89078487, type: 3}
+    - {fileID: 8300000, guid: 5ba51fbecb8b1eb4382eaf6c953dcd78, type: 3}
   sfxVoices: 8
   musicBus: {fileID: 0}
   sfxBus: {fileID: 0}

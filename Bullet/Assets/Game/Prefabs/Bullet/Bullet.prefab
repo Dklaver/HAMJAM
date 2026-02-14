@@ -147,7 +147,7 @@ MonoBehaviour:
   bulletBox: {fileID: 0}
   isMovingForward: 1
   moveSpeed: 10
-  forwardSpeed: 5
+  forwardSpeed: 10
   rotationSpeed: 90
   listOfObjectsToRotate: []
   cameraXOffset: -0.24
@@ -164,6 +164,9 @@ MonoBehaviour:
   blockNegativeX: 0
   blockPositiveY: 0
   blockNegativeY: 0
+  rb: {fileID: 7695420998104815494}
+  loseSpeedKMH: 50
+  hasLost: 0
 --- !u!114 &2615127623869927639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,8 +206,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.58406, y: 0.5792218, z: 4.1751046}
-  m_Center: {x: -0.95196044, y: 1.6846862, z: -1.1050261}
+  m_Size: {x: 0.3281572, y: 0.5792218, z: 4.1751046}
+  m_Center: {x: -0.98442763, y: 1.6846862, z: -1.1050261}
 --- !u!54 &7695420998104815494
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -279,6 +282,8 @@ MonoBehaviour:
   slowDownAmount: 1.5
   bullet: {fileID: 1989055903294381829}
   slowdownMechanic: {fileID: 2615127623869927639}
+  hitVolume: {fileID: 0}
+  volumeFadeDuration: 1
 --- !u!1 &8798751489439878526
 GameObject:
   m_ObjectHideFlags: 0

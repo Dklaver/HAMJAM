@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement; // ADDED
 
 public class ScoreManager : MonoBehaviour
 {
@@ -19,10 +20,15 @@ public class ScoreManager : MonoBehaviour
 
     private Coroutine scoreRoutine;
 
+    // ADDED: scene-based key
+    private string SceneBestScoreKey
+    {
+        get { return BEST_SCORE_KEY + "_" + SceneManager.GetActiveScene().name; }
+    }
+
     void Awake()
     {
         Instance = this;
-        DontDestroyOnLoad(this.gameObject);
 
         LoadBestScore();
     }
@@ -46,8 +52,7 @@ public class ScoreManager : MonoBehaviour
 
         if (finalScore > 0)
             SoundManager.Instance.PlaySound(Sound.GameWin);
-
-        else 
+        else
             SoundManager.Instance.PlaySound(Sound.GameLose);
 
         scoreRoutine = StartCoroutine(AnimateFinalScore());
@@ -58,18 +63,18 @@ public class ScoreManager : MonoBehaviour
     // ----------------------------
     void LoadBestScore()
     {
-        int best = PlayerPrefs.GetInt(BEST_SCORE_KEY, 0);
+        int best = PlayerPrefs.GetInt(SceneBestScoreKey, 0);
         bestScoreText.text = best + " Points";
     }
 
     void SaveBestScore(int currentScore)
     {
-        int best = PlayerPrefs.GetInt(BEST_SCORE_KEY, -1);
+        int best = PlayerPrefs.GetInt(SceneBestScoreKey, -1);
 
         // If no score exists OR new record
         if (best == -1 || currentScore > best)
         {
-            PlayerPrefs.SetInt(BEST_SCORE_KEY, currentScore);
+            PlayerPrefs.SetInt(SceneBestScoreKey, currentScore);
             PlayerPrefs.Save();
 
             best = currentScore;
@@ -86,30 +91,26 @@ public class ScoreManager : MonoBehaviour
 
         int targetScore = Convert.ToInt32(finalScore);
         int displayedScore = 0;
-        SoundManager.Instance.PlayLoop(Sound.PointsCountUp);
+        SaveBestScore(targetScore);
 
+        SoundManager.Instance.PlayLoop(Sound.PointsCountUp);
 
         while (timer < duration)
         {
             timer += Time.unscaledDeltaTime;
 
-            // Ease-out curve (fast start, slow end)
             float t = timer / duration;
             t = 1f - Mathf.Pow(1f - t, 3f);
 
             displayedScore = Mathf.RoundToInt(Mathf.Lerp(0, targetScore, t));
-
             finalScoreText.text = displayedScore + " Points";
+
 
             yield return null;
         }
 
-        // Ensure exact final value
         finalScoreText.text = targetScore + " Points";
         SoundManager.Instance.StopLoop(Sound.PointsCountUp);
 
-        // Save best score AFTER animation finishes
-        SaveBestScore(targetScore);
     }
-
 }
