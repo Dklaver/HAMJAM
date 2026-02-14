@@ -21898,7 +21898,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8eb8deba24b3fb642a16308ff74028c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
-  musicClips: []
+  musicClips:
+  - {fileID: 0}
   musicFade: 0.5
   musicVolume: 0.7
   sfxEntries:
