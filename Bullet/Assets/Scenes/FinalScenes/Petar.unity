@@ -187,17 +187,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0927e1425bb48b34b83bd11ff36636bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelSelection
---- !u!114 &3437989 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4559593105843925470, guid: e74fa1f1399e161478629a39b49874eb, type: 3}
-  m_PrefabInstance: {fileID: 3437986}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7eb4ef16bedbe343930afe0a1861c6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!1 &11394158
 GameObject:
   m_ObjectHideFlags: 0
@@ -4702,9 +4691,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5704921182505588695, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704921182505588695, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 3437989}
+      objectReference: {fileID: 3437988}
+    - target: {fileID: 5704921182505588695, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LoadLevel
+      objectReference: {fileID: 0}
+    - target: {fileID: 5704921182505588695, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: LevelSelection, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 5971507239111561025, guid: 4cb71a69b55dc544d9ae87273404bebb, type: 3}
       propertyPath: audioSource
       value: 
