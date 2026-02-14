@@ -21,15 +21,13 @@ public class CollisionLogic : MonoBehaviour
     {
         bullet.forwardSpeed += latestRewardHitObject.rewardValueSpeed;
         slowdownMechanic.stamina += latestRewardHitObject.rewardValueEnergy;
-
-        TriggerHitVolume();
     }
 
     void SlowDown()
     {
         bullet.forwardSpeed -= slowDownAmount;
 
-        TriggerHitVolume();
+        TriggerSlowdownVolume();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -48,15 +46,24 @@ public class CollisionLogic : MonoBehaviour
         }
     }
 
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Obstacle"))
+        {
+            SlowDown();
+            Debug.Log("Hit an obstacle");
+        }
+    }
+
     // ----------------------------
-    // VOLUME CONTROL
+    // ONLY FOR SLOWDOWN EFFECT
     // ----------------------------
-    void TriggerHitVolume()
+    void TriggerSlowdownVolume()
     {
         if (hitVolume == null)
             return;
 
-        // instantly go to full effect
+        // instantly enable full effect
         hitVolume.weight = 1f;
 
         // restart fade if already running
