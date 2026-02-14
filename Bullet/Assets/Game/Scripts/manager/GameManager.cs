@@ -55,6 +55,9 @@ public class GameManager : MonoBehaviour
 
     private void TriggerLose()
     {
+        ScoreManager.Instance.finalScore = CalculateFinalScore();
+        ScoreManager.Instance.UpdateFinalScore();
+
         slowdownMechanic.Speedup();
         slowdownMechanic.enabled = false;
 
@@ -79,5 +82,27 @@ public class GameManager : MonoBehaviour
 
         StartCoroutine(LoseConditionUI());
 
+    }
+
+    public float CalculateFinalScore()
+    {
+        float speed = bullet.forwardSpeed;
+        int hit = ScoreManager.Instance.score;
+
+        // Lose condition
+        if (speed <= 5f)
+            return 0f;
+
+        if (hit == 0)
+            return 0f;
+
+        // Normalize inputs
+        float speedValue = Mathf.InverseLerp(5f, 100f, speed);
+        float hitValue = hit / 4f;
+
+        // Weighted result
+        float finalScore = (speedValue * 0.7f) + (hitValue * 0.3f);
+
+        return finalScore * 10000;
     }
 }
